@@ -4,12 +4,20 @@ import { GameInfo } from "../components/Game";
 import { GameField } from "../components/Game/";
 import { GameSymbol } from "../components/Game";
 import { Header } from "../components/Header";
+import { UiButton, UiModal } from "../components/uikit";
 import { useGameState } from "../components/Game";
 
 function HomePage() {
   const [playersCount] = useState(4);
-  const { cells, currentMove, handleCellClick, nextMove, winnerSequence, handlePlayerTimeOver, winnerSymbol } =
-    useGameState(playersCount);
+  const {
+    cells,
+    currentMove,
+    handleCellClick,
+    nextMove,
+    winnerSequence,
+    handlePlayerTimeOver,
+    winnerSymbol,
+  } = useGameState(playersCount);
 
   return (
     <div className="bg-slate-400 min-h-screen">
@@ -29,6 +37,24 @@ function HomePage() {
             <GameSymbol symbol={winnerSymbol} />
           </div>
         )}
+
+        <UiModal width="md" open={winnerSymbol} onClose={() => console.log('close')}>
+          <UiModal.Header>Результат игры</UiModal.Header>
+          <UiModal.Body>
+            <div className="text-sm">
+              Победитель: <span className="text-teal-500">Sergey</span>
+            </div>
+          </UiModal.Body>
+          <UiModal.Footer>
+            <UiButton size="md" variant="outline">
+              Вернуться
+            </UiButton>
+            <UiButton size="md" variant="primary">
+              Начать заново
+            </UiButton>
+          </UiModal.Footer>
+        </UiModal>
+
         <GameField
           playersCount={playersCount}
           cells={cells}
