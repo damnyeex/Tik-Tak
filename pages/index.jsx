@@ -8,7 +8,7 @@ import { UiButton, UiModal } from "../components/uikit";
 import { useGameState } from "../components/Game";
 
 function HomePage() {
-  const [playersCount] = useState(4);
+  const [playersCount] = useState(2);
   const {
     cells,
     currentMove,
@@ -38,7 +38,11 @@ function HomePage() {
           </div>
         )}
 
-        <UiModal width="md" open={winnerSymbol} onClose={() => console.log('close')}>
+        <UiModal
+          width="md"
+          open={winnerSymbol}
+          onClose={() => console.log("close")}
+        >
           <UiModal.Header>Результат игры</UiModal.Header>
           <UiModal.Body>
             <div className="text-sm">

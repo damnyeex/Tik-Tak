@@ -65,7 +65,7 @@ function GameInfo({
 }
 
 function PlayerInfo({ playerInfo, isRight, isTimerRunning, onTimeOver }) {
-  const [timer, setTimer] = useState(3);
+  const [timer, setTimer] = useState(10);
 
   const minutes = String(Math.floor(timer / 60)).padStart(2, "0");
   const seconds = String(timer % 60).padStart(2, "0");
@@ -80,7 +80,7 @@ function PlayerInfo({ playerInfo, isRight, isTimerRunning, onTimeOver }) {
 
       return () => {
         clearInterval(interval);
-        setTimer(3);
+        setTimer(10);
       };
     }
   }, [isTimerRunning]);

@@ -11,6 +11,7 @@ function App({ Component, pageProps }) {
   return (
     <div className={roboto.className}>
       <Component {...pageProps} />;
+      <div id="modals"></div>
     </div>
   );
 }
