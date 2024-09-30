@@ -1,7 +1,7 @@
 import ArrowDown from "./Icons/ArrowDown";
 import logoSrc from "./logo.svg";
 import Image from "next/image";
-import avatarSrc from "../Game/images/avatar.png";
+import avatarSrc from "../GameNew/ui/images/avatar.png";
 import { Profile } from "../Profile";
 import { UiButton } from "../uikit";
 

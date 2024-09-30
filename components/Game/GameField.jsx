@@ -2,6 +2,7 @@ import clsx from "clsx";
 import { UiButton } from "../uikit";
 import { GameSymbol } from "./GameSymbol";
 
+
 function GameField({
   className,
   cells,

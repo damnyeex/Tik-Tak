@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import Image from "next/image";
-import { avatarSrc } from "../Game/images/avatar.png";
+import avatarSrc from "../GameNew/ui/images/avatar.png";
 
 function Profile({ className, username, rating, avatar = avatarSrc }) {
   return (
