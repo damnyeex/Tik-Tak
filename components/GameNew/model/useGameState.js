@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { GameSymbols } from "../components/Game/constants";
-import { getNextMove, computeWinner } from "../components/Game/model";
+import { GameSymbols } from "../constants";
+import { computeWinner } from "./computeWinner";
+import { getNextMove } from "./getNextMove";
 
 function useGameState(playersCount) {
   const [{ cells, currentMove, playersTimeOver }, setGameState] = useState(
@@ -11,9 +12,9 @@ function useGameState(playersCount) {
     }),
   );
 
-  const winnerSequence = computeWinner({ cells });
+  const winnerSequence = computeWinner({cells} );
   const nextMove = getNextMove(currentMove, playersCount, playersTimeOver);
-  const winnerSymbol = nextMove === currentMove ?  currentMove : winnerSequence?.[0]
+  const winnerSymbol = nextMove === currentMove ?  currentMove : cells[winnerSequence?.[0]]
 
   const handleCellClick = (index) => {
     setGameState((lastGameState) => {

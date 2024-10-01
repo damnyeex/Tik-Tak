@@ -2,7 +2,6 @@ import clsx from "clsx";
 import { RxCrossCircled } from "react-icons/rx";
 import { createPortal } from "react-dom";
 
-
 /**
  * @param {{
  * className: string,
@@ -12,7 +11,7 @@ import { createPortal } from "react-dom";
  * }} props
  */
 
-function UiModal({ width = "md", className, children, open = true, onClose }) {
+function UiModal({ width = "md", className, children, open = false, onClose }) {
   const handleClick = (event) => {
     const inModal = event.target.closest("[data-id=modal]");
 

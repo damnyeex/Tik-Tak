@@ -28,7 +28,7 @@ function PlayerInfo({
       <div className={clsx("relative", isRight && "order-3")}>
         <div
           className={
-            "flex items-center gap-2 cursor-pointer text-start text-teal-600"
+            "flex items-center gap-2 cursor-pointer text-start text-teal-600 w-44"
           }
         >
           <Image className="w-12 h-12" src={avatar} alt="avatar" unoptimized />

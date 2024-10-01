@@ -1,13 +1,3 @@
-import { MoveOrder } from "./constants";
-
-function getNextMove(currentMove, playersCount, playersTimeOver) {
-  const sliceMoveOrder = MoveOrder.slice(0, playersCount).filter(
-    (symbol) => !playersTimeOver.includes(symbol),
-  );
-  const nextMoveIndex = sliceMoveOrder.indexOf(currentMove) + 1;
-  return sliceMoveOrder[nextMoveIndex] ?? sliceMoveOrder[0];
-}
-
 function computeWinner({ cells, sequenceSize = 5, fieldSize = 17 }) {
   const gap = Math.floor(sequenceSize / 2);
 
@@ -55,4 +45,4 @@ function computeWinner({ cells, sequenceSize = 5, fieldSize = 17 }) {
   return undefined;
 }
 
-export { getNextMove, computeWinner };
+export {computeWinner}
