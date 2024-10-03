@@ -1,4 +1,4 @@
-import { players } from "./constants";
+import { gameStateActions, players } from "./constants";
 import { useGameState } from "./model/useGameState";
 import { BackLink } from "./ui/BackLink";
 import { GameCell } from "./ui/GameCell";
@@ -18,6 +18,7 @@ function Game() {
     handleCellClick,
     winnerSequence,
     winnerSymbol,
+    dispatch,
   } = useGameState(playersCount);
 
   const winnerPlayer = players.find((player) => player.symbol === winnerSymbol);
@@ -49,7 +50,10 @@ function Game() {
             isWinner={winnerSequence?.includes(index)}
             disabled={winnerSymbol}
             onClick={() => {
-              handleCellClick(index);
+              dispatch({
+                type: gameStateActions.CellClick,
+                index,
+              });
             }}
             symbol={cell}
           />

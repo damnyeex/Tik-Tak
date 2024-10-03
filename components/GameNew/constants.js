@@ -44,3 +44,8 @@ export const players = [
     symbol: GameSymbols.Square,
   },
 ];
+
+export const gameStateActions = {
+    CellClick : 'cell-click'
+}
+

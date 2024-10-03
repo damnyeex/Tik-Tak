@@ -1,9 +1,39 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import { GameSymbols } from "../constants";
 import { computeWinner } from "./computeWinner";
 import { getNextMove } from "./getNextMove";
 
+
+
+const gameStateReducer = (state, action) => {
+  console.log(action)
+  return state
+}
+
+const initGameState = ({}) => ({
+  cells: new Array(17 * 17).fill(null),
+  currentMove: GameSymbols.Cross,
+});
+
 function useGameState(playersCount) {
+  const  [gameState, dispatch] = useReducer(gameStateReducer, {}, initGameState );
+  
+  const winnerSequence = computeWinner({ cells: gameState.cells });
+  const nextMove = getNextMove(gameState.currentMove, playersCount);
+  const winnerSymbol = nextMove === gameState.currentMove ?  currentMove : gameState.cells[winnerSequence?.[0]]
+
+
+    return {
+      cells: gameState.cells,
+      currentMove:gameState.currentMove,
+      nextMove,
+      winnerSequence,
+      winnerSymbol,
+      computeWinner,
+      dispatch
+    };
+
+  /*
   const [{ cells, currentMove, playersTimeOver }, setGameState] = useState(
     () => ({
       cells: new Array(17 * 17).fill(null),
@@ -11,10 +41,6 @@ function useGameState(playersCount) {
       playersTimeOver: [],
     }),
   );
-
-  const winnerSequence = computeWinner({cells} );
-  const nextMove = getNextMove(currentMove, playersCount, playersTimeOver);
-  const winnerSymbol = nextMove === currentMove ?  currentMove : cells[winnerSequence?.[0]]
 
   const handleCellClick = (index) => {
     setGameState((lastGameState) => {
@@ -60,6 +86,7 @@ function useGameState(playersCount) {
     handlePlayerTimeOver,
     winnerSymbol,
   };
+  */
 }
 
 export { useGameState };
