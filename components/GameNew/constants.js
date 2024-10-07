@@ -45,7 +45,4 @@ export const players = [
   },
 ];
 
-export const gameStateActions = {
-    CellClick : 'cell-click'
-}
 

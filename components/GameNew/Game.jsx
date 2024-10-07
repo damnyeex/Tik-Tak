@@ -1,5 +1,5 @@
-import { gameStateActions, players } from "./constants";
-import { useGameState } from "./model/useGameState";
+import { useReducer } from "react";
+import { players } from "./constants";
 import { BackLink } from "./ui/BackLink";
 import { GameCell } from "./ui/GameCell";
 import { GameInfo } from "./ui/GameInfo";
@@ -8,20 +8,33 @@ import { GameMoveInfo } from "./ui/GameMoveInfo";
 import { GameOverModal } from "./ui/GameOverModal";
 import { GameTittle } from "./ui/GameTittle";
 import { PlayerInfo } from "./ui/PlayerInfo";
+import { computeWinner } from "./model/computeWinner";
+import { getNextMove } from "./model/getNextMove";
+import {
+  initGameState,
+  useGameReducer,
+  gameStateActions,
+} from "./model/useGameReducer";
+import { computeWinnerSymbol } from "./model/computeWinnerSymbol";
 
-const playersCount = 2;
+const PlayersCount = 2;
+
 function Game() {
-  const {
-    cells,
-    currentMove,
-    nextMove,
-    handleCellClick,
+  const [gameState, dispatch] = useReducer(
+    useGameReducer,
+    { playersCount: PlayersCount },
+    initGameState,
+  );
+
+  const winnerSequence = computeWinner(gameState);
+  const nextMove = getNextMove(gameState);
+  const winnerSymbol = computeWinnerSymbol(gameState, {
     winnerSequence,
-    winnerSymbol,
-    dispatch,
-  } = useGameState(playersCount);
+    nextMove,
+  });
 
   const winnerPlayer = players.find((player) => player.symbol === winnerSymbol);
+  const { cells, currentMove } = gameState;
   return (
     <>
       <GameLayout
@@ -30,7 +43,7 @@ function Game() {
         gameInfo={
           <GameInfo isRatingGame playersCount={4} timeMode={"1 мин на ход"} />
         }
-        playersList={players.slice(0, playersCount).map((player, index) => (
+        playersList={players.slice(0, PlayersCount).map((player, index) => (
           <PlayerInfo
             key={player.id}
             avatar={player.avatar}
@@ -42,16 +55,19 @@ function Game() {
           />
         ))}
         gameMoveInfo={
-          <GameMoveInfo currentMove={currentMove} nextMove={nextMove} />
+          <GameMoveInfo
+            currentMove={currentMove.currentMove}
+            nextMove={nextMove.nextMove}
+          />
         }
         gameCells={cells.map((cell, index) => (
           <GameCell
             key={index}
             isWinner={winnerSequence?.includes(index)}
-            disabled={winnerSymbol}
+            disabled={false}
             onClick={() => {
               dispatch({
-                type: gameStateActions.CellClick,
+                type: gameStateActions.Cell_Click,
                 index,
               });
             }}
@@ -61,7 +77,7 @@ function Game() {
       />
       <GameOverModal
         winnerName={winnerPlayer?.username}
-        players={players.slice(0, playersCount).map((player, index) => (
+        players={players.slice(0, PlayersCount).map((player, index) => (
           <PlayerInfo
             key={player.id}
             avatar={player.avatar}

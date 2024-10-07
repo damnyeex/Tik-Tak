@@ -1,8 +1,9 @@
 function computeWinner({ cells, sequenceSize = 5, fieldSize = 17 }) {
   const gap = Math.floor(sequenceSize / 2);
-  
+
   function compareElements(indexes) {
     let result = true;
+
     for (let i = 1; i < indexes.length; i++) {
       result &&= !!cells[indexes[i]];
       result &&= cells[indexes[i]] === cells[indexes[i - 1]];
@@ -50,4 +51,4 @@ function computeWinner({ cells, sequenceSize = 5, fieldSize = 17 }) {
   return undefined;
 }
 
-export {computeWinner}
+export { computeWinner };
