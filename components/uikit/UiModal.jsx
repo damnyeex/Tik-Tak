@@ -53,6 +53,7 @@ function UiModal({ width = "md", className, children, open = false, onClose }) {
       </div>
     </div>
   );
+  return createPortal(modal, document.getElementById("modals"));
 }
 
 UiModal.Header = function UiModalHeader({ children, className }) {

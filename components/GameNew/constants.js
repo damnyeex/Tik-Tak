@@ -44,5 +44,3 @@ export const players = [
     symbol: GameSymbols.Square,
   },
 ];
-
-

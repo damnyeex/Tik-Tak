@@ -16,15 +16,28 @@ import {
   gameStateActions,
 } from "./model/useGameReducer";
 import { computeWinnerSymbol } from "./model/computeWinnerSymbol";
+import { computePlayerTimer } from "./model/computePlayerTimer";
+import { useInterval } from "../lib/timers";
 
 const PlayersCount = 2;
 
 function Game() {
   const [gameState, dispatch] = useReducer(
     useGameReducer,
-    { playersCount: PlayersCount },
+    {
+      playersCount: PlayersCount,
+      defaultTimer: 10000,
+      currentMoveStart: Date.now(),
+    },
     initGameState,
   );
+
+  useInterval(1000, gameState.currentMoveStart, () => {
+    dispatch({
+      type: gameStateActions.Tick,
+      now: Date.now(),
+    });
+  });
 
   const winnerSequence = computeWinner(gameState);
   const nextMove = getNextMove(gameState);
@@ -34,6 +47,7 @@ function Game() {
   });
 
   const winnerPlayer = players.find((player) => player.symbol === winnerSymbol);
+
   const { cells, currentMove } = gameState;
   return (
     <>
@@ -41,34 +55,39 @@ function Game() {
         backLink={<BackLink />}
         tittle={<GameTittle />}
         gameInfo={
-          <GameInfo isRatingGame playersCount={4} timeMode={"1 мин на ход"} />
+          <GameInfo isRatingGame playersCount={2} timeMode={"1 мин на ход"} />
         }
-        playersList={players.slice(0, PlayersCount).map((player, index) => (
-          <PlayerInfo
-            key={player.id}
-            avatar={player.avatar}
-            username={player.username}
-            rating={player.rating}
-            timer={60}
-            symbol={player.symbol}
-            isRight={index % 2 === 1}
-          />
-        ))}
+        playersList={players.slice(0, PlayersCount).map((player, index) => {
+          const { gameTimers, timerStartAt } = computePlayerTimer(
+            gameState,
+            player.symbol,
+          );
+          return (
+            <PlayerInfo
+              key={player.id}
+              avatar={player.avatar}
+              username={player.username}
+              rating={player.rating}
+              symbol={player.symbol}
+              isRight={index % 2 === 1}
+              timerStartAt={timerStartAt}
+              gameTimers={gameTimers}
+            />
+          );
+        })}
         gameMoveInfo={
-          <GameMoveInfo
-            currentMove={currentMove.currentMove}
-            nextMove={nextMove.nextMove}
-          />
+          <GameMoveInfo currentMove={currentMove} nextMove={nextMove} />
         }
         gameCells={cells.map((cell, index) => (
           <GameCell
             key={index}
             isWinner={winnerSequence?.includes(index)}
-            disabled={false}
+            disabled={gameState.winnerSymbol}
             onClick={() => {
               dispatch({
                 type: gameStateActions.Cell_Click,
                 index,
+                now: Date.now(),
               });
             }}
             symbol={cell}
@@ -83,7 +102,7 @@ function Game() {
             avatar={player.avatar}
             username={player.username}
             rating={player.rating}
-            timer={60}
+            gameTimers={gameState.gameTimers[player.symbol]}
             symbol={player.symbol}
             isRight={index % 2 === 1}
           />
